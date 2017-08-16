@@ -29,7 +29,7 @@ getent passwd ${user} 2>/dev/null || {
     
     # Set password if specified
     [[ -n "${pwhash}" ]] && {
-        chpasswd -e <<< "${user}:${pass}"
+        chpasswd -e <<< "${user}:${pwhash}"
     } || {
         usermod -p "*" $user # disabled password
     }
