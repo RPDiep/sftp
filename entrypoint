@@ -25,6 +25,7 @@ getent passwd ${user} 2>/dev/null || {
     [[ -n "${auth_keys}" ]] && {
         mkdir /home/${user}/.ssh
         base64 -d <<< ${auth_keys} > /home/${user}/.ssh/authorized_keys
+        chmod -R go -rwx /home/${user}/.ssh
     }
     
     # Set password if specified
