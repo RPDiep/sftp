@@ -105,7 +105,7 @@ fi
 
 # Create users only on first run
 if [ ! -f "$userConfFinalPath" ]; then
-    mkdir -p "$(dirname $userConfFinalPath)"
+    mkdir -p "$(dirname $userConfFinalPath)" && touch $userConfFinalPath
 
     # Append mounted config to final config
     if [ -f "$userConfPath" ]; then
