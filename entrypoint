@@ -1,9 +1,11 @@
 #!/bin/bash
 set -e
-export DEBIAN_FRONTEND=noninteractive
+
+if [ -n "$debug" ]; then
+    set -x
+fi
 
 userConfPath="/etc/sftp/users.conf"
-userConfPathLegacy="/etc/sftp-users.conf"
 userConfFinalPath="/var/run/sftp/users.conf"
 
 function printHelp() {
@@ -99,12 +101,6 @@ fi
 if [ "$1" == "--readme" ]; then
     printReadme
     exit 0
-fi
-
-# Backward compatibility with legacy config path
-if [ ! -f "$userConfPath" -a -f "$userConfPathLegacy" ]; then
-    mkdir -p "$(dirname $userConfPath)"
-    ln -s "$userConfPathLegacy" "$userConfPath"
 fi
 
 # Create users only on first run
