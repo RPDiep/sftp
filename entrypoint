@@ -15,7 +15,7 @@ function exitwitherror() {
 [[ "$uid" -eq 0 ]] && exitwitherror "Environment variable 'uid' may not be 0"
 
 # Add the user
-getent passwd ${user} && {
+getent passwd ${user} 2>/dev/null && {
     useradd --no-user-group --non-unique --uid ${uid} ${user}
     mkdir -p /home/${user}
     chown root:root /home/${user}
@@ -38,9 +38,5 @@ getent passwd ${user} && {
 # Generate unique ssh keys for this container, if needed
 [[ ! -f /etc/ssh/ssh_host_ed25519_key ]] && ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
 [[ ! -f /etc/ssh/ssh_host_rsa_key ]] && ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ''
-
-getent passwd ${user} 2>/dev/null || {
-    
-}
 
 exec /usr/sbin/sshd -D -e
