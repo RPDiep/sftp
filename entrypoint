@@ -16,16 +16,15 @@ function exitwitherror() {
 
 # Add the user
 getent passwd ${user} 2>/dev/null || {
-    useradd --no-user-group --non-unique --uid ${uid} ${user}
-    mkdir -p /home/${user}
-    chown root:root /home/${user}
-    chmod 755 /home/${user}
+    useradd -m -d /home/sftp --no-user-group --non-unique --uid ${uid} ${user}
+    chown root:root /home/sftp
+    chmod 755 /home/sftp
     
     # Add ssh keys if specified
     [[ -n "${auth_keys}" ]] && {
-        mkdir /home/${user}/.ssh
-        base64 -d <<< ${auth_keys} > /home/${user}/.ssh/authorized_keys
-        chmod -R go -rwx /home/${user}/.ssh
+        mkdir /home/sftp/.ssh
+        base64 -d <<< ${auth_keys} > /home/sftp/.ssh/authorized_keys
+        chmod -R go -rwx /home/sftp/.ssh
     }
     
     # Set password if specified
